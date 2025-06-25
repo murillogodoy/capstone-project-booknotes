@@ -19,18 +19,17 @@
     </header>
     <hr>
     <main>
-        <% bookDetails.forEach(book => { %>
-            <% ratings.forEach(rating => { %>
-                <section>
-                    <div>
-                        <img src="https://covers.openlibrary.org/b/isbn/<%= book.isbn %>-M.jpg">
-                        <h2><%= book.bname %> - By <%= book.author %></h2>
-                        <small>Date read: <%= book.rdate %>. How Strongly I recommend It: <%= rating.rating %>/10</small>
-                        <p><%= rating.rtext %></p>
-                    </div>
-                </section>
-            <% }); %> 
-        <% }); %>
+        <section>
+            <% for (let book of books) { %>
+                <div>
+                    <img src="https://covers.openlibrary.org/b/isbn/<%= book.isbn %>-M.jpg" alt="Book cover of <%= book.bname %> By <%= book.author %>">
+                    <h2><%= book.bname %> - By <%= book.author %></h2>
+                    <small>Date read: <%= book.rdate %>. How strongly I recommend It: <%= book.rating %>/10</small>
+
+                    <p><%= book.rtext %></p>
+                </div>
+            <% }; %>
+        </section>
     </main>
     <footer>
         Made by Murillo Godoy with Open Library Covers API
