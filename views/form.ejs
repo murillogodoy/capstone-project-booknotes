@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Book</title>
+    <link rel="stylesheet" href="form.css">
+</head>
+<body>
+    <h1>What book to add?</h1>
+    <a href="/">Go back</a>
+    <form action="/addbook" method="post">
+        <input type="text" name="bookname"  placeholder="Book name" maxlength="100" required>
+        <input type="text" name="bookauthor" placeholder="Author" maxlength="100" required>
+        <input type="number" name="isbn" minlength="10" placeholder="ISBN" maxlength="13" required>
+        <input type="date" name="bookdate" placeholder="When did you read?" required>
+        <h2>Rate the book</h2>
+        <input type="number" name="bookrating" placeholder="Book Rating 0 to 10" min="0" max="10" required>
+        <input type="text" name="ratingtxt" placeholder="Tell about the book" maxlength="500" required>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
