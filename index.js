@@ -1,9 +1,9 @@
 import axios from "axios";
 import pg from "pg";
-import e from "express";
+import express from "express";
 import bodyParser from "body-parser";
 
-const app = e();
+const app = express();
 const port = 3000;
 
 const db = new pg.Client({
@@ -14,43 +14,38 @@ const db = new pg.Client({
     port: 5432,
 });
 
-app.use(e.static("public"));
-bodyParser.urlencoded({extended: true});
+app.use(express.static("public"));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 db.connect();
 
 async function getBooks() {
     /* Receber valor do front identificando a ordem de filtragem escolhida e utilizar ifs para cada order by */
-    const result = await db.query("SELECT (bname, author, isbn, rdate, rating, rtext) FROM books JOIN ratings ON books.id = ratings.bookid;");
-    return result.rows;
+    const result = await db.query("SELECT bname, author, isbn, rdate, rating, rtext FROM books JOIN ratings ON books.id = ratings.bookid;");
+    console.log(result.rows);
+    return result.rows; 
 };
-
-let arrayBooks = [
-    {id: 1, bname: "Metamorphosis", author: "Franz Kafka", isbn: "9786580210008", rdate: "2023-06-15"},
-]
-
-let arrayRatings = [
-    {id: 1, bookid: 1, rating: 10, rtext: "A book about a man who turns into a insect. His family starts to fear and hate him little by little until he finally dies. They feel relieved. "}
-]
 
 /* Where book info is shown */
 app.get("/", async (req, res) => {
     try {
+        const result = await getBooks();
         res.render("index.ejs", {
-            bookDetails: arrayBooks,
-            ratings: arrayRatings,
+            books: result,
     });
     } catch (error) {
         console.log(error);
     }
 });
 
-/* Where user adds books */
+/* Where user adds/edits books */
 app.get("/bookform", (req, res) => {
-    res.render("form.ejs");
+    res.render("form.ejs", {
+        title: "What book to add?",
+    });
 });
 
-/* Where info user sent is added to tables */
+/* info user sent is added to tables */
 app.post("/addbook", async (req, res) => {
     const bname = req.body.bookname;
     const author = req.body.bookauthor;
@@ -60,8 +55,9 @@ app.post("/addbook", async (req, res) => {
     const rtxt = req.body.ratingtxt;
 
     try {
-        await db.query("INSERT INTO books VALUES ($1, $2, $3, $4);", [bname, author, isbn, rdate]);
-        await db.query("INSERT INTO ratings VALUES ($1, $2);", [rating, rtxt]);
+        const result = await db.query("INSERT INTO books (bname, author, isbn, rdate) VALUES ($1, $2, $3, $4) RETURNING id;", [bname, author, isbn, rdate]);
+        const id = result.rows[0].id;
+        await db.query("INSERT INTO ratings (bookid, rating, rtext) VALUES ($1, $2, $3);", [id, rating, rtxt]);
         res.redirect("/");
     } catch (error) {
         console.log(error);
