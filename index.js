@@ -20,16 +20,28 @@ app.use(bodyParser.urlencoded({ extended: true }));
 db.connect();
 
 async function getBooks() {
-    /* Receber valor do front identificando a ordem de filtragem escolhida e utilizar ifs para cada order by */
-    const result = await db.query("SELECT bname, author, isbn, rdate, rating, rtext FROM books JOIN ratings ON books.id = ratings.bookid;");
-    console.log(result.rows);
-    return result.rows; 
+    // Receber valor do front identificando a ordem de filtragem escolhida e utilizar ifs para cada order by 
+    try {
+        const result = await db.query("SELECT books.id, bname, author, isbn, rdate, rating, rtext FROM books JOIN ratings ON books.id = ratings.bookid;");
+    
+        const booksWithCovers = result.rows.map((book) => {
+            let rdate = book.rdate;
+            if (rdate instanceof Date) {
+                rdate = rdate.toISOString().slice(0, 10);
+            }
+            return {...book, rdate, coverUrl: `https://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg`};
+    });
+    return booksWithCovers;
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 /* Where book info is shown */
 app.get("/", async (req, res) => {
     try {
         const result = await getBooks();
+        console.log(result);
         res.render("index.ejs", {
             books: result,
     });
@@ -39,10 +51,22 @@ app.get("/", async (req, res) => {
 });
 
 /* Where user adds/edits books */
-app.get("/bookform", (req, res) => {
-    res.render("form.ejs", {
-        title: "What book to add?",
+app.get("/bookform", async (req, res) => {
+    try {
+        const bookId = req.query.id;
+        const books = await getBooks();
+        const bookToEdit = books.find((book) => bookId == book.id);
+        res.render("form.ejs", {
+            title: bookId ? "Change book details" : "What book to add?",
+            book: bookToEdit,
     });
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+app.get("/editbook", (req, res) => {
+    res.redirect("/");
 });
 
 /* info user sent is added to tables */
@@ -62,6 +86,18 @@ app.post("/addbook", async (req, res) => {
     } catch (error) {
         console.log(error);
     }
+});
+
+app.patch("/editbook", async (req, res) => {
+    try {
+        const {bookname, bookauthor, bookdate, bookrating, ratingtxt, bookId} = req.body;
+        await db.query("UPDATE books SET bname = $1, author = $2, rdate = $3 WHERE books.id = $4;", [bookname, bookauthor, bookdate, bookId]);
+        await db.query("UPDATE ratings SET rating = $1, rtext = $2 WHERE ratings.bookid = $3;", [bookrating, ratingtxt, bookId]);
+        console.log("Dados atualizados com sucesso");
+    } catch (error) {
+        console.log("Erro ao editar livro: ", error);
+    }
+        
 });
 
 
