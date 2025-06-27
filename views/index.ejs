@@ -22,7 +22,8 @@
         <section>
             <% for (let book of books) { %>
                 <div>
-                    <img src="https://covers.openlibrary.org/b/isbn/<%= book.isbn %>-M.jpg" alt="Book cover of <%= book.bname %> By <%= book.author %>">
+                    <img src="<%=book.coverUrl%>" alt="Book cover of <%= book.bname %> By <%= book.author %>">
+                    <a href="/bookform?id=<%=book.id%>">Edit</a>
                     <h2><%= book.bname %> - By <%= book.author %></h2>
                     <small>Date read: <%= book.rdate %>. How strongly I recommend It: <%= book.rating %>/10</small>
 
