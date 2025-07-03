@@ -3,24 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Book</title>
-    <link rel="stylesheet" href="form.css">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/styles/form.css">
 </head>
 <body>
-    <% if (book) { %>
-        <h1>Change book details</h1>
+    <% if (locals.book) { %>
+        <h1><%= heading %></h1>
         <a href="/">Go back</a>
-        <form action="/editbook" id="editForm">
+        <form action="/editbook/<%= book.id %>" id="editForm" method="post">
             <input type="text" name="bookname" value="<%= book.bname %>"  placeholder="Book name" maxlength="100" autocomplete="off" required>
             <input type="text" name="bookauthor" value="<%= book.author %>" placeholder="Author" maxlength="100" autocomplete="off" required>
             <input type="date" name="bookdate" value="<%= book.rdate %>" placeholder="When did you read?" autocomplete="off" required>
             <h2>Rate the book</h2>
             <input type="number" name="bookrating" value="<%= book.rating %>" placeholder="Book Rating 0 to 10" min="0" max="10" required>
-            <input type="text" name="ratingtxt" value="<%= book.rtext %>" placeholder="Tell about the book" maxlength="500" autocomplete="off" required>
+            <input type="text" name="ratingtxt" value="<%= book.rtext %>" placeholder="Tell about the book" maxlength="1000" autocomplete="off" required>
             <button type="submit">Submit</button>
         </form>
     <% } else { %>
-        <h1><%= title %></h1>
+        <h1><%= heading %></h1>
         <a href="/">Go back</a>
         <form action="/addbook" method="post">
             <input type="text" name="bookname"  placeholder="Book name" maxlength="100" autocomplete="off" required>
@@ -29,28 +29,9 @@
             <input type="date" name="bookdate" placeholder="When did you read?" autocomplete="off" required>
             <h2>Rate the book</h2>
             <input type="number" name="bookrating" placeholder="Book Rating 0 to 10" min="0" max="10" required>
-            <input type="text" name="ratingtxt" placeholder="Tell about the book" maxlength="500" autocomplete="off" required>
-            <input type="hidden" name="bookId" value="<%= book.id %>">;
+            <input type="text" name="ratingtxt" placeholder="Tell about the book" maxlength="1000" autocomplete="off" required>
             <button type="submit">Submit</button>
         </form>
    <% } %>
-
-   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js">
-        document.getElementById("editForm").addEventListener("submit", function (e) {
-            e.preventDefault();
-
-            const formData = new FormData(this);
-            const data = Object.fromEntries(formData.entries());
-
-            axios.patch('/editbook', data) 
-            .then(res => {
-                console.log("Response: ", res.data);
-                res.redirect("/");
-            })
-            .catch(err => {
-                console.error("Erro ao atualizar: ", err);
-            });
-        });
-   </script>
 </body>
 </html>
