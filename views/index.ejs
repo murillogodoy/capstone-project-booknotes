@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book notes | Murillo Godoy</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/styles/style.css">
 </head>
 <body>
     <header>
-        <h1>Murillo Godoy<br>Books I've read</h1>
-        <a href="/bookform">Add Book</a>
+        <h1><a href="/">Murillo Godoy<br>Books I've read</a></h1>
+        <a href="/addform">Add Book</a>
         <p>Tiny summary of books I've read until now.</p>
         <p>Sorted by default for most recent highest ratings. Sort by 
-            <a href="">title</a>, 
-            <a href="">newest</a>, or 
-            <a href="">best</a>.
+            <a href="/filter?sort=title">title</a>, 
+            <a href="/filter?sort=newest">newest</a>, or 
+            <a href="/filter?sort=best">best</a>.
         </p>
     </header>
     <hr>
@@ -23,10 +23,10 @@
             <% for (let book of books) { %>
                 <div>
                     <img src="<%=book.coverUrl%>" alt="Book cover of <%= book.bname %> By <%= book.author %>">
-                    <a href="/bookform?id=<%=book.id%>">Edit</a>
+                    <a href="/editform/<%=book.id%>">Edit</a>
+                    <a href="/deletebook/<%=book.id%>">Delete</a>
                     <h2><%= book.bname %> - By <%= book.author %></h2>
                     <small>Date read: <%= book.rdate %>. How strongly I recommend It: <%= book.rating %>/10</small>
-
                     <p><%= book.rtext %></p>
                 </div>
             <% }; %>
