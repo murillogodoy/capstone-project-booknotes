@@ -11,7 +11,7 @@
         <h1><a href="/">Murillo Godoy<br>Books I've read</a></h1>
         <a href="/addform">Add Book</a>
         <p>Tiny summary of books I've read until now.</p>
-        <p>Sorted by default for most recent highest ratings. Sort by 
+        <p>Sorted by <strong>default</strong> for most recent highest ratings. Sort by 
             <a href="/filter?sort=title">title</a>, 
             <a href="/filter?sort=newest">newest</a>, or 
             <a href="/filter?sort=best">best</a>.
@@ -19,16 +19,19 @@
     </header>
     <hr>
     <main>
-        <section>
+        <section class="books">
             <% for (let book of books) { %>
-                <div>
+                <div class="bookd">
                     <img src="<%=book.coverUrl%>" alt="Book cover of <%= book.bname %> By <%= book.author %>">
-                    <a href="/editform/<%=book.id%>">Edit</a>
-                    <a href="/deletebook/<%=book.id%>">Delete</a>
+                    <div class="editdel">
+                        <a href="/editform/<%=book.id%>">Edit</a>
+                        <a href="/deletebook/<%=book.id%>">Delete</a>
+                    </div>
                     <h2><%= book.bname %> - By <%= book.author %></h2>
                     <small>Date read: <%= book.rdate %>. How strongly I recommend It: <%= book.rating %>/10</small>
                     <p><%= book.rtext %></p>
                 </div>
+                <hr>
             <% }; %>
         </section>
     </main>

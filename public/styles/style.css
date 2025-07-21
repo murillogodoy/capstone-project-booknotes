@@ -1,0 +1,134 @@
+@media (max-width: 768px) {
+    body {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        background-color: #8f9ab3;
+    }
+
+    header {
+        text-align: center;
+        font-size: 20px;
+    }
+
+    main {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .editdel {
+        display: inline-block;
+        padding: 2px;
+    }
+
+    .editdel>:last-child {
+        display: block;
+    }
+
+    .bookd {
+        padding: 10px 0px 0px 5px;
+    }
+
+    .bookd a {
+        text-decoration: none;
+        color: #160193db;
+    }
+
+    .bookd a:hover {
+        color: red;
+    }
+
+    .bookd h2 {
+        font-size: 24px;
+    }
+
+    .bookd > small {
+        font-weight: bold;
+    }
+
+    .bookd > p {
+        text-align: left;
+        color: #090b4b;
+        font-size: 22px;
+    }
+
+    footer {
+        text-align: center;
+        padding: 3px;
+        background-color: #3f3f67bd;
+        color: #d3cece;
+    }
+}
+
+@media (min-width: 768px) {
+    body {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        background-color: #8f9ab3;
+        overflow-x: hidden;
+    }
+
+    body > hr {
+        align-self: center;
+        margin: 10px;
+        width: 70%;
+    }
+
+    header {
+        text-align: center;
+        font-size: 20px;
+    }
+
+    main {
+        width: 50%;
+        align-self: center;
+    }
+    
+    .editdel {
+        display: inline-block;
+        padding: 2px;
+    }
+
+    .editdel>:last-child {
+        display: block;
+    }
+
+    .bookd a {
+        text-decoration: none;
+        color: #160193db;
+    }
+
+    .bookd a:hover {
+        color: red;
+    }
+
+    .bookd {
+        padding: 10px 0px 0px 5px;
+    }
+    
+    .bookd > small {
+        font-weight: bold;
+    }
+
+    .bookd > p {
+        color: #090b4b;
+        font-size: 22px;
+        text-align: justify;
+    }
+
+    footer {
+        text-align: center;
+        padding: 3px;
+        background-color: #3f3f67bd;
+        color: #d3cece;
+    }
+}
+
+@media (min-width: 1400px) {
+    body > hr {
+        width: 60%;
+    }
+}
