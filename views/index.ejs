@@ -23,9 +23,12 @@
             <% for (let book of books) { %>
                 <div class="bookd">
                     <img src="<%=book.coverUrl%>" alt="Book cover of <%= book.bname %> By <%= book.author %>">
-                    <div class="editdel">
-                        <a href="/editform/<%=book.id%>">Edit</a>
-                        <a href="/deletebook/<%=book.id%>">Delete</a>
+                    <div class="dropdown">
+                        <button class="dropbtn">▼</button>
+                        <div class="dropdown-content">
+                            <a href="/editform/<%=book.id%>">Edit</a>
+                            <a href="/deletebook/<%=book.id%>">Delete</a>
+                        </div>
                     </div>
                     <h2><%= book.bname %> - By <%= book.author %></h2>
                     <small>Date read: <%= book.rdate %>. How strongly I recommend It: <%= book.rating %>/10</small>
@@ -38,5 +41,51 @@
     <footer>
         Made by Murillo Godoy with Open Library Covers API
     </footer>
+
+<style>
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+.dropbtn {
+  background-color: #415867de;
+  color: white;
+  padding: 0px 10px;
+  font-size: 12px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 120px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  border-radius: 4px;
+}
+.dropdown-content a {
+  color: #333;
+  padding: 10px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  border-bottom: 1px solid #eee;
+}
+.dropdown-content a:last-child {
+  border-bottom: none;
+}
+.dropdown-content a:hover {
+  color: rgba(14, 111, 167, 0.74);
+  background-color: #f1f1f1;
+}
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+.dropdown:hover .dropbtn {
+  background-color: #2980b9;
+}
+</style>
 </body>
 </html>
