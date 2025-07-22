@@ -15,8 +15,8 @@
             <input type="text" name="bookauthor" value="<%= book.author %>" placeholder="Author" maxlength="100" autocomplete="off" required>
             <input type="date" name="bookdate" value="<%= book.rdate %>" placeholder="When did you read?" autocomplete="off" required>
             <h2>Rate the book</h2>
-            <input type="number" name="bookrating" value="<%= book.rating %>" placeholder="Book Rating 0 to 10" min="0" max="10" required>
-            <input type="text" name="ratingtxt" value="<%= book.rtext %>" placeholder="Tell about the book" maxlength="1000" autocomplete="off" required>
+            <input id="brate" type="number" name="bookrating" value="<%= book.rating %>" placeholder="Book Rating 0 to 10" min="0" max="10" required>
+            <textarea id="btext" name="ratingtxt" value="<%= book.rtext %>" placeholder="Tell about the book" maxlength="1000" autocomplete="off" required></textarea>
             <button type="submit">Submit</button>
         </form>
     <% } else { %>
@@ -28,8 +28,8 @@
             <input type="text" name="isbn" pattern="\d{13}" placeholder="ISBN - 13 characters" maxlength="13" autocomplete="off" required>
             <input type="date" name="bookdate" placeholder="When did you read?" autocomplete="off" required>
             <h2>Rate the book</h2>
-            <input type="number" name="bookrating" placeholder="Book Rating 0 to 10" min="0" max="10" required>
-            <input type="text" name="ratingtxt" placeholder="Tell about the book" maxlength="1000" autocomplete="off" required>
+            <input id="brate" type="number" name="bookrating" placeholder="1 to 10" min="0" max="10" required>
+            <textarea id="btext" name="ratingtxt" placeholder="Tell about the book" maxlength="1000" autocomplete="off" required></textarea>
             <button type="submit">Submit</button>
         </form>
    <% } %>
