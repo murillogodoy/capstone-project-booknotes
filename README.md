@@ -2,13 +2,13 @@
 
 1. Clone the repository
    
-  git clone https://github.com/murillogodoy/capstone-project-booknotes.git
+  <code>git clone https://github.com/murillogodoy/capstone-project-booknotes.git</code>
   
-  cd capstone-project-booknotes
+  <code>cd capstone-project-booknotes</code>
 
 2. Install dependencies
    
-  npm install
+  <code>npm install</code>
 
 3. Set up PostgreSQL database
 
@@ -21,13 +21,13 @@
 
 5. Start the API server
    
-   node api.js
+   <code>node api.js</code>
 
     * The API will run at http://localhost:4000.
   
 6. Start the main server
 
-   node index.js
+   <code>node index.js</code>
 
     * The website will be available at http://localhost:3000.
 
