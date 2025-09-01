@@ -7,6 +7,7 @@ const app = express();
 const port = 4000;
 
 app.use(bodyParser.json());
+dotenv.config();
 
 const db = new pg.Client({
     user: process.env.DB_USER,
