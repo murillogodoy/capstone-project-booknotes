@@ -9,7 +9,7 @@ const port = 4000;
 app.use(bodyParser.json());
 dotenv.config();
 
-const db = new pg.Client({
+const db = new pg.Pool({
     user: process.env.DB_USER,
     host: process.env.DB_HOST,
     database: process.env.DB_DATABASE,
