@@ -18,7 +18,7 @@ const pool = new Pool({
     ssl: { rejectUnauthorized: false }
 });
 
-db.connect();
+pool.connect();
 
 // SELECT books from db
 app.get("/api/getbooks", async (req, res) => {
@@ -26,13 +26,13 @@ app.get("/api/getbooks", async (req, res) => {
         let sort = req.query.sort;
         let result;
         if (sort === 'title') {
-            result = await db.query("SELECT books.id, bname, author, isbn, rdate, rating, rtext FROM books JOIN ratings ON books.id = ratings.bookid ORDER BY bname;");
+            result = await pool.query("SELECT books.id, bname, author, isbn, rdate, rating, rtext FROM books JOIN ratings ON books.id = ratings.bookid ORDER BY bname;");
         } else if (sort === 'newest') {
-            result = await db.query("SELECT books.id, bname, author, isbn, rdate, rating, rtext FROM books JOIN ratings ON books.id = ratings.bookid ORDER BY rdate DESC;");
+            result = await pool.query("SELECT books.id, bname, author, isbn, rdate, rating, rtext FROM books JOIN ratings ON books.id = ratings.bookid ORDER BY rdate DESC;");
         } else if (sort === 'best') {
-            result = await db.query("SELECT books.id, bname, author, isbn, rdate, rating, rtext FROM books JOIN ratings ON books.id = ratings.bookid ORDER BY rating DESC;");
+            result = await pool.query("SELECT books.id, bname, author, isbn, rdate, rating, rtext FROM books JOIN ratings ON books.id = ratings.bookid ORDER BY rating DESC;");
         } else {
-            result = await db.query("SELECT books.id, bname, author, isbn, rdate, rating, rtext FROM books JOIN ratings ON books.id = ratings.bookid ORDER BY rating DESC, rdate DESC;");
+            result = await pool.query("SELECT books.id, bname, author, isbn, rdate, rating, rtext FROM books JOIN ratings ON books.id = ratings.bookid ORDER BY rating DESC, rdate DESC;");
         }
         // create new array with objects from both tables(books, ratings) with formatted date and outsider object(book cover)
         const booksWithCovers = result.rows.map((book) => {
@@ -52,7 +52,7 @@ app.get("/api/getbooks", async (req, res) => {
 app.get("/api/getbooks/:id", async (req, res) => {
     try {
         const Id = req.params.id;
-        const result = await db.query("SELECT books.id, bname, author, isbn, rdate, rating, rtext FROM books JOIN ratings ON books.id = ratings.bookid WHERE books.id = $1;", [Id]);
+        const result = await pool.query("SELECT books.id, bname, author, isbn, rdate, rating, rtext FROM books JOIN ratings ON books.id = ratings.bookid WHERE books.id = $1;", [Id]);
         if (!result.rows[0]) { // if book not found return error
             return res.status(404).json({ error: 'Book not found'});
         }
@@ -78,9 +78,9 @@ app.post("/api/add", async (req, res) => {
     const rtxt = req.body.ratingtxt;
 
     try {
-        const result = await db.query("INSERT INTO books (bname, author, isbn, rdate) VALUES ($1, $2, $3, $4) RETURNING id;", [bname, author, isbn, rdate]);
+        const result = await pool.query("INSERT INTO books (bname, author, isbn, rdate) VALUES ($1, $2, $3, $4) RETURNING id;", [bname, author, isbn, rdate]);
         const id = result.rows[0].id;
-        await db.query("INSERT INTO ratings (bookid, rating, rtext) VALUES ($1, $2, $3);", [id, rating, rtxt]);
+        await pool.query("INSERT INTO ratings (bookid, rating, rtext) VALUES ($1, $2, $3);", [id, rating, rtxt]);
         res.status(200).json("New book added successfully");
     } catch (error) {
         console.log(error);
@@ -96,8 +96,8 @@ app.put("/api/edit/:id", async (req, res) => {
         const rating = req.body.bookrating;
         const bookTxt = req.body.ratingtxt;
         const bookId = req.params.id;
-        await db.query("UPDATE books SET bname = $1, author = $2, rdate = $3 WHERE books.id = $4;", [bookName, author, bookDate, bookId]);
-        await db.query("UPDATE ratings SET rating = $1, rtext = $2 WHERE ratings.bookid = $3;", [rating, bookTxt, bookId]);
+        await pool.query("UPDATE books SET bname = $1, author = $2, rdate = $3 WHERE books.id = $4;", [bookName, author, bookDate, bookId]);
+        await pool.query("UPDATE ratings SET rating = $1, rtext = $2 WHERE ratings.bookid = $3;", [rating, bookTxt, bookId]);
         res.status(200).json("Book updated successfully");
     } catch (error) {
         console.log("Error when editing book: ", error);
@@ -107,8 +107,8 @@ app.put("/api/edit/:id", async (req, res) => {
 // DELETE book
 app.delete("/api/delete/:id", async (req, res) => {
     try {
-        await db.query("DELETE FROM ratings WHERE ratings.bookid = $1;", [req.params.id]);
-        await db.query("DELETE FROM books WHERE books.id = $1;", [req.params.id]);
+        await pool.query("DELETE FROM ratings WHERE ratings.bookid = $1;", [req.params.id]);
+        await pool.query("DELETE FROM books WHERE books.id = $1;", [req.params.id]);
         res.status(200).json("Book deleted successfully");
     } catch (error) {
         console.log("Error deleting book: ", error);
