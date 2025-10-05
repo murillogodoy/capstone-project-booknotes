@@ -1,7 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
-import pg from "pg";
+import { Pool } from "pg";
 
 const app = express();
 const port = 4000;
@@ -9,7 +9,7 @@ const port = 4000;
 app.use(bodyParser.json());
 dotenv.config();
 
-const db = new pg.Pool({
+const pool = new Pool({
     user: process.env.DB_USER,
     host: process.env.DB_HOST,
     database: process.env.DB_DATABASE,
