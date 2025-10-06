@@ -10,7 +10,7 @@
     "pg": "^8.16.2"
   },
   "scripts": {
-  "start": "concurrently \"node index.js\" \"node api.js\""
+  "start": "concurrently \"node backend/index.js\" \"node backend/api.js\""
 }
 
 }
