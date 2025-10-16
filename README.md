@@ -13,7 +13,7 @@
 3. Set up PostgreSQL database
 
   * Create a database named booknotes.
-  * Create the required tables (books and ratings) according to the project schema.
+  * Create the required tables (books and ratings) according to database.sql file.
   
 4. Configure database connection
 
